@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { use } from 'react';
 import {AuthContext} from '../Provider/AuthProvider';
 
 const Register = () => {
-  const {createUser,setUser}=use(AuthContext);
+  const {createUser,setUser,updateUser}=use(AuthContext);
   const [nameError,setNameError]=useState('');
+  const navigate=useNavigate();
   const HandleSubmit=(e)=>{
     e.preventDefault();
       const form=e.target;
@@ -22,10 +23,20 @@ const Register = () => {
       createUser(email,password)
       .then(result=>{
         const createdUser=result.user;
-        setUser(createdUser);
+        updateUser({displayName:name,photoURL:photoUrl})
+        .then(()=>{
+          setUser({...createdUser,displayName:name,photoURL:photoUrl});
+          navigate('/');
+          //console.log('User profile updated successfully',createdUser);
+        })
+        .catch(error=>{
+          setUser(createdUser);
+          //console.log('Error updating user profile:',error);
+        })
+        
       })
       .catch(error=>{
-        console.log(error);
+        //console.log(error);
       });
   }
     return (
