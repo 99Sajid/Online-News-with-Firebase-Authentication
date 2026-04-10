@@ -31,12 +31,12 @@ const Register = () => {
         })
         .catch(error=>{
           setUser(createdUser);
-          //console.log('Error updating user profile:',error);
+          console.log('Error updating user profile:',error);
         })
         
       })
       .catch(error=>{
-        //console.log(error);
+        console.log(error);
       });
   }
     return (
